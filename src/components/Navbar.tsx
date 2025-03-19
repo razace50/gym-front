@@ -1,8 +1,11 @@
 import React from "react";
 import logo from "../../public/images/logo.png";
 import { Button } from "./ui/button";
+import { AlignJustify } from "lucide-react";
 
 const Navbar: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
   const navItems = [
     { id: 1, name: "Home", link: "/" },
     { id: 2, name: "About", link: "/about" },
@@ -20,7 +23,16 @@ const Navbar: React.FC = () => {
             <span className=" text-3xl font-semibold"> Gym</span>
           </div>
         </div>
-        <div className="flex items-center justify-between space-x-12">
+        {/* Hamburger Icon for small devices */}
+        <div className="lg:hidden md:hidden sm:block sm:order-2 ">
+          <Button
+            variant={"secondary"}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <AlignJustify />
+          </Button>
+        </div>
+        <div className=" hidden lg:flex items-center justify-between space-x-12">
           {navItems.map((item, index) => (
             <a
               key={index}
@@ -31,7 +43,7 @@ const Navbar: React.FC = () => {
             </a>
           ))}
         </div>
-        <div>
+        <div className="sm:order-1">
           <Button variant={"secondary"}>Join Membership</Button>
         </div>
       </nav>
