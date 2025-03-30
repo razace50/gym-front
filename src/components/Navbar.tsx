@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="bg-orange-500 text-white px-6 py-2 flex justify-between items-center">
+      <nav className="bg-black text-white px-6 py-2 flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <img src={logo} className="h-[75px] w-[75px]" alt="logo" />
           <div className="flex flex-col space-y-0">
