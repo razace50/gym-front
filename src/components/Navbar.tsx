@@ -20,13 +20,15 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="bg-black text-white px-6 py-2 flex justify-between items-center">
+      <nav className="bg-slate-950 text-white px-6 py-2 flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <img src={logo} className="h-[75px] w-[75px]" alt="logo" />
-          <div className="flex flex-col space-y-0">
-            <h1 className="text-3xl font-semibold">Hamro</h1>
-            <span className="text-3xl font-semibold"> Gym</span>
-          </div>
+          <a href="/" className="flex flex-col ml-2 hover:text-slate-300">
+            <div className="flex flex-col space-y-0">
+              <h1 className="text-3xl font-semibold">Hamro</h1>
+              <span className="text-3xl font-semibold"> Gym</span>
+            </div>
+          </a>
         </div>
 
         {/* Hamburger Icon for small devices */}
