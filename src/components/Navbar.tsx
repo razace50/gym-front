@@ -8,9 +8,12 @@ const Navbar: React.FC = () => {
 
   const navItems = [
     { id: 1, name: "Home", link: "/" },
-    { id: 2, name: "About", link: "/about" },
-    { id: 3, name: "Services", link: "/services" },
-    { id: 4, name: "Contact", link: "/contact" },
+    { id: 2, name: "About Us", link: "/about" },
+    { id: 3, name: "Classes", link: "/classes" },
+    { id: 4, name: "Trainers", link: "/trainers" },
+    { id: 5, name: "Services", link: "/services" },
+    { id: 6, name: "Membership", link: "/membership" },
+    { id: 7, name: "Contact", link: "/contact" },
   ];
 
   const handleNavItemClick = () => {

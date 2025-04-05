@@ -57,13 +57,13 @@ const HeroSection: React.FC<HeroSectionProps> = () => {
           </div>
 
           {/* Image section - right side */}
-          <div className="relative hidden lg:block">
+          {/* <div className="relative hidden lg:block">
             <img
               src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=800&q=80"
               alt="Fitness training"
               className="rounded-lg object-cover w-[600px] h-[800px]"
             />
-          </div>
+          </div> */}
         </div>
       </div>
 
