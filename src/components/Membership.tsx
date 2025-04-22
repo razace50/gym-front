@@ -36,7 +36,7 @@ const Membership = () => {
   return (
     <div className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
       <h1 className="text-4xl font-bold text-center mb-10">Membership Plans</h1>
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3 px-16">
         {plans.map((plan, index) => (
           <div
             key={index}

@@ -78,7 +78,9 @@ const Navbar: React.FC = () => {
 
         {/* Join Membership Button */}
         <div className="order-1">
-          <Button variant={"secondary"}>Join Membership</Button>
+          <a href="/membership">
+            <Button variant={"secondary"}>Join Membership</Button>
+          </a>
         </div>
       </nav>
     </>
