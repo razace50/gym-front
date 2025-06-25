@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
 
         {/* Show menu Items on Small Devices when Hamburger is Clicked */}
         <div
-          className={`lg:hidden w-full bg-orange-500 ${
+          className={`lg:hidden w-full bg-slate-950 ${
             isMenuOpen ? "block" : "hidden"
           } mt-4 hover:shadow-lg p-4`}
         >
