@@ -5,6 +5,7 @@ import { AlignJustify } from "lucide-react";
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const menuRef = React.useRef<HTMLDivElement>(null);
 
   const navItems = [
     { id: 1, name: "Home", link: "/" },
@@ -14,12 +15,27 @@ const Navbar: React.FC = () => {
     { id: 5, name: "Services", link: "/services" },
     { id: 6, name: "Membership", link: "/membership" },
     { id: 7, name: "Contact", link: "/contact" },
+    { id: 8, name: "Login/Signup", link: "/" },
   ];
 
+  //close menu when a nav item is clicked
   const handleNavItemClick = () => {
     // Close the menu when a nav item is clicked
     setIsMenuOpen(false);
   };
+  // Close the menu when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   return (
     <>
@@ -60,16 +76,17 @@ const Navbar: React.FC = () => {
 
         {/* Show menu Items on Small Devices when Hamburger is Clicked */}
         <div
-          className={`lg:hidden w-full bg-slate-950 ${
+          ref={menuRef}
+          className={`absolute top-[80px] left-0 w-full z-50 bg-slate-950 lg:hidden ${
             isMenuOpen ? "block" : "hidden"
-          } mt-4 hover:shadow-lg p-4`}
+          } hover:shadow-lg p-4`}
         >
           {navItems.map((item, index) => (
             <a
               key={index}
               href={item.link}
               className="block py-2 text-lg font-semibold hover:underline"
-              onClick={handleNavItemClick} // Close menu when an item is clicked
+              onClick={handleNavItemClick}
             >
               {item.name}
             </a>
