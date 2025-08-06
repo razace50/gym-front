@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
     { id: 5, name: "Services", link: "/services" },
     { id: 6, name: "Membership", link: "/membership" },
     { id: 7, name: "Contact", link: "/contact" },
-    { id: 8, name: "Login/Signup", link: "/" },
+    { id: 8, name: "Login", link: "/login" },
   ];
 
   //close menu when a nav item is clicked
