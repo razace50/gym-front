@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 
-const Login: React.FC = () => {
+const Signup: React.FC = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Logging in with:", { email, password });
-    // Add login API call here
+    console.log("Signing up with:", { name, email, password });
+    // Add signup API call here
   };
 
   return (
@@ -17,8 +18,18 @@ const Login: React.FC = () => {
         className="bg-gray-800 p-8 rounded shadow-md w-full max-w-sm"
       >
         <h2 className="text-2xl text-white font-bold mb-6 text-center">
-          Login
+          Sign Up
         </h2>
+        <div className="mb-4">
+          <label className="block text-white">Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded mt-1"
+            required
+          />
+        </div>
         <div className="mb-4">
           <label className="block text-white">Email</label>
           <input
@@ -41,14 +52,14 @@ const Login: React.FC = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
         >
-          Login
+          Sign Up
         </button>
         <p className="text-center text-sm text-white mt-4">
-          New user?{" "}
-          <a href="/signup" className="text-blue-500 hover:underline">
-            Sign up
+          Already have an account?{" "}
+          <a href="/login" className="text-blue-500 hover:underline">
+            Login
           </a>
         </p>
       </form>
@@ -56,4 +67,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Signup;

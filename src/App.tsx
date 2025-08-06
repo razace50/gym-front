@@ -9,6 +9,7 @@ import Services from "./components/Services";
 import Membership from "./components/Membership";
 import Contact from "./components/Contact";
 import Login from "./components/Login/Login"; // Assuming you have a Login component
+import Signup from "./components/Login/Signup"; // Assuming you have a Signup component
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
         <Route path="/membership" element={<Membership />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
-        {/* Add more routes as needed */}
+        <Route path="/signup" element={<Signup />} />
       </Routes>
       <Footer />
     </>
