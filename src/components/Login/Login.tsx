@@ -11,7 +11,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
+    <div className="lg:min-h-screen sm:min-h-full flex items-center justify-center py-6 bg-gray-900">
       <form
         onSubmit={handleSubmit}
         className="bg-gray-800 p-8 rounded shadow-md w-full max-w-sm"
