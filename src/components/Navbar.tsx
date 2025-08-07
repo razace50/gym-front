@@ -6,6 +6,7 @@ import { AlignJustify } from "lucide-react";
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const menuRef = React.useRef<HTMLDivElement>(null);
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
 
   const navItems = [
     { id: 1, name: "Home", link: "/" },
@@ -26,7 +27,12 @@ const Navbar: React.FC = () => {
   // Close the menu when clicking outside
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
         setIsMenuOpen(false);
       }
     };
@@ -53,6 +59,7 @@ const Navbar: React.FC = () => {
         {/* Hamburger Icon for small devices */}
         <div className="lg:hidden sm:block order-2">
           <Button
+            ref={buttonRef}
             variant={"secondary"}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="p-2"
