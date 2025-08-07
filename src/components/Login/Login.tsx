@@ -11,10 +11,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="lg:min-h-screen sm:min-h-full flex items-center justify-center py-6 bg-gray-900">
+    <div className="lg:min-h-fit sm:min-h-full flex items-center justify-center py-6 bg-gray-950">
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-800 p-8 rounded shadow-md w-full max-w-sm"
+        className="bg-gray-900 p-8 rounded shadow-md w-full max-w-sm"
       >
         <h2 className="text-2xl text-white font-bold mb-6 text-center">
           Login
