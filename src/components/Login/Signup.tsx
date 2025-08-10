@@ -15,7 +15,7 @@ const Signup: React.FC = () => {
     <div className="lg:min-h-fit sm:min-h-full flex items-center justify-center py-6 bg-gray-950">
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-800 p-8 rounded shadow-md w-full max-w-sm"
+        className="bg-gray-900 p-8 rounded shadow-md w-full max-w-sm"
       >
         <h2 className="text-2xl text-white font-bold mb-6 text-center">
           Sign Up
@@ -26,7 +26,7 @@ const Signup: React.FC = () => {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded mt-1"
+            className="w-full p-2 border border-gray-300 rounded mt-1 text-white"
             required
           />
         </div>
@@ -36,7 +36,7 @@ const Signup: React.FC = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded mt-1"
+            className="w-full p-2 border border-gray-300 rounded mt-1 text-white"
             required
           />
         </div>
