@@ -84,7 +84,7 @@ const Navbar: React.FC = () => {
         {/* Show menu Items on Small Devices when Hamburger is Clicked */}
         <div
           ref={menuRef}
-          className={`absolute top-[80px] left-0 w-full z-50 bg-slate-950 lg:hidden ${
+          className={`absolute  top-[80px] left-0 w-full z-50 bg-slate-950 lg:hidden ${
             isMenuOpen ? "block" : "hidden"
           } hover:shadow-lg p-4`}
         >
@@ -92,7 +92,7 @@ const Navbar: React.FC = () => {
             <a
               key={index}
               href={item.link}
-              className="block py-2 text-lg font-semibold hover:underline"
+              className="text-center block py-2 text-lg font-semibold hover:underline"
               onClick={handleNavItemClick}
             >
               {item.name}

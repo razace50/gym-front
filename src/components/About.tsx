@@ -15,7 +15,7 @@ const About = () => {
         <img
           src="/assets/gym-hero.jpg"
           alt="Gym Hero"
-          className="rounded-2xl shadow-lg mx-auto w-full max-w-3xl"
+          className="rounded-2xl shadow-lg mx-auto max-w-3xl"
         />
       </div>
 
