@@ -27,7 +27,7 @@ const Signup: React.FC = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded mt-1 text-white"
-            placeholder="Enter your full name"
+            placeholder="Enter your fullname"
             required
           />
         </div>
@@ -38,6 +38,7 @@ const Signup: React.FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded mt-1 text-white"
+            placeholder="Enter you email"
             required
           />
         </div>
@@ -47,7 +48,8 @@ const Signup: React.FC = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded mt-1"
+            className="w-full p-2 border border-gray-300 rounded mt-1 text-white"
+            placeholder="Enter your password"
             required
           />
         </div>
