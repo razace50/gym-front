@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,6 +21,7 @@ const Login: React.FC = () => {
         <h2 className="text-2xl text-white font-bold mb-6 text-center">
           Login
         </h2>
+        {/* Email input */}
         <div className="mb-4">
           <label className="block text-white">Email</label>
           <input
@@ -30,6 +33,7 @@ const Login: React.FC = () => {
             required
           />
         </div>
+        {/* Password input field */}
         <div className="mb-6">
           <label className="block text-white">Password</label>
           <input
