@@ -120,16 +120,16 @@ const Footer: React.FC = () => {
             <h3 className="text-lg font-semibold text-white">Contact Us</h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <FaMapMarkerAlt className="text-primary mt-1 flex-shrink-0" />
-                <span>123 sangam street, Gaidakot City, GN 12345</span>
+                <FaMapMarkerAlt className="text-secondary mt-1 flex-shrink-0" />
+                <span className="text-gray-400 hover:text-secondary">123 sangam street, Gaidakot City, GN 12345</span>
               </li>
               <li className="flex items-center gap-3">
-                <FaPhone className="text-primary flex-shrink-0" />
-                <span>(+977) 9800761486</span>
+                <FaPhone className="text-secondary flex-shrink-0" />
+                <span className="text-gray-400 hover:text-secondary">(+977) 9800761486</span>
               </li>
               <li className="flex items-center gap-3">
-                <FaEnvelope className="text-primary flex-shrink-0" />
-                <span>info@hamrogym.com</span>
+                <FaEnvelope className="text-secondary flex-shrink-0" />
+                <span className="text-gray-400 hover:text-secondary">info@hamrogym.com</span>
               </li>
             </ul>
           </div>
