@@ -27,6 +27,7 @@ const Signup: React.FC = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded mt-1 text-white"
+            placeholder="Enter your full name"
             required
           />
         </div>
