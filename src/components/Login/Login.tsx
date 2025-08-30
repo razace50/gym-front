@@ -34,16 +34,25 @@ const Login: React.FC = () => {
           />
         </div>
         {/* Password input field */}
-        <div className="mb-6">
+        <div className="mb-6 relative">
           <label className="block text-white">Password</label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded mt-1 text-white"
             placeholder="Enter your Password"
             required
+            
           />
+          <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute right-3 pt-3 text-gray-400 hover:text-white"
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20}/>}
+
+          </button>
         </div>
         <button
           type="submit"
