@@ -28,7 +28,7 @@ const Login: React.FC = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded mt-1 text-white"
+            className="w-full p-2 border border-gray-300 bg-gray-800 rounded mt-1 text-white"
             placeholder="Enter your Email"
             required
           />
@@ -40,7 +40,7 @@ const Login: React.FC = () => {
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded mt-1 text-white"
+            className="w-full p-2 border border-gray-300 rounded mt-1 bg-gray-800 text-white"
             placeholder="Enter your Password"
             required
             
