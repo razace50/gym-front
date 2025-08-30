@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
           {/* Column 1: About */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <FaDumbbell className="text-primary text-2xl" />
+              <FaDumbbell className="text-secondary text-2xl" />
               <h2 className="text-xl font-bold text-white">Hamro Gym</h2>
             </div>
             <p className="text-sm leading-relaxed left-8">
@@ -31,28 +31,28 @@ const Footer: React.FC = () => {
             <div className="flex space-x-4 pt-2">
               <a
                 href="#"
-                className="text-gray-400 hover:text-primary transition-colors"
+                className="text-gray-400 hover:text-secondary transition-colors"
               >
                 <FaFacebook size={20} />
                 <span className="sr-only">Facebook</span>
               </a>
               <a
                 href="#"
-                className="text-gray-400 hover:text-primary transition-colors"
+                className="text-gray-400 hover:text-secondary transition-colors"
               >
                 <FaInstagram size={20} />
                 <span className="sr-only">Instagram</span>
               </a>
               <a
                 href="#"
-                className="text-gray-400 hover:text-primary transition-colors"
+                className="text-gray-400 hover:text-secondary transition-colors"
               >
                 <FaTwitter size={20} />
                 <span className="sr-only">Twitter</span>
               </a>
               <a
                 href="#"
-                className="text-gray-400 hover:text-primary transition-colors"
+                className="text-gray-400 hover:text-secondary transition-colors"
               >
                 <FaYoutube size={20} />
                 <span className="sr-only">YouTube</span>
@@ -67,7 +67,7 @@ const Footer: React.FC = () => {
               <li>
                 <a
                   href="/"
-                  className="text-gray-400 hover:text-primary transition-colors"
+                  className="text-gray-400 hover:text-secondary transition-colors"
                 >
                   Home
                 </a>
@@ -75,7 +75,7 @@ const Footer: React.FC = () => {
               <li>
                 <a
                   href="/about"
-                  className="text-gray-400 hover:text-primary transition-colors"
+                  className="text-gray-400 hover:text-secondary transition-colors"
                 >
                   About Us
                 </a>
@@ -83,7 +83,7 @@ const Footer: React.FC = () => {
               <li>
                 <a
                   href="/classes"
-                  className="text-gray-400 hover:text-primary transition-colors"
+                  className="text-gray-400 hover:text-secondary transition-colors"
                 >
                   Classes
                 </a>
@@ -91,7 +91,7 @@ const Footer: React.FC = () => {
               <li>
                 <a
                   href="trainers"
-                  className="text-gray-400 hover:text-primary transition-colors"
+                  className="text-gray-400 hover:text-secondary transition-colors"
                 >
                   Trainers
                 </a>
@@ -99,7 +99,7 @@ const Footer: React.FC = () => {
               <li>
                 <a
                   href="membership"
-                  className="text-gray-400 hover:text-primary transition-colors"
+                  className="text-gray-400 hover:text-secondary transition-colors"
                 >
                   Membership
                 </a>
@@ -107,7 +107,7 @@ const Footer: React.FC = () => {
               <li>
                 <a
                   href="contact"
-                  className="text-gray-400 hover:text-primary transition-colors"
+                  className="text-gray-400 hover:text-secondary transition-colors"
                 >
                   Contact
                 </a>
