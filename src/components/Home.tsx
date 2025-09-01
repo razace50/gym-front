@@ -1,4 +1,5 @@
 import type React from "react";
+import { Link } from "react-router-dom";
 
 type HeroSectionProps = {};
 
@@ -23,9 +24,11 @@ const HeroSection: React.FC<HeroSectionProps> = () => {
               reach your fitness goals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button className="px-6 py-3 bg-primary text-primary-foreground rounded-md font-bold text-lg">
+              <Link to="/membership">
+              <button className="px-6 py-3 bg-primary text-primary-foreground rounded-md font-bold text-lg transition-transform duration-300 hover:scale-110 cursor-pointer">
                 Join Now
               </button>
+              </Link>
               <button className="px-6 py-3 bg-transparent border border-gray-300 text-white rounded-md font-bold text-lg">
                 Book a Tour
               </button>

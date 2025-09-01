@@ -177,19 +177,19 @@ const Footer: React.FC = () => {
           <div className="flex gap-4 mt-4 md:mt-0 text-sm">
             <a
               href="#"
-              className="text-gray-400 hover:text-primary transition-colors"
+              className="text-gray-400 hover:text-secondary transition-colors"
             >
               Privacy Policy
             </a>
             <a
               href="#"
-              className="text-gray-400 hover:text-primary transition-colors"
+              className="text-gray-400 hover:text-secondary transition-colors"
             >
               Terms of Service
             </a>
             <a
               href="#"
-              className="text-gray-400 hover:text-primary transition-colors"
+              className="text-gray-400 hover:text-secondary transition-colors"
             >
               Cookie Policy
             </a>
