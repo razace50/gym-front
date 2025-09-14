@@ -10,6 +10,7 @@ import Membership from "./components/Membership";
 import Contact from "./components/Contact";
 import Login from "./components/Login/Login"; // Assuming you have a Login component
 import Signup from "./components/Login/Signup"; // Assuming you have a Signup component
+import DashboardLayout from "./components/layouts/DashboardLayout";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/dashboard" element={<DashboardLayout/>} />
       </Routes>
       <Footer />
     </>

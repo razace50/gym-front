@@ -1,8 +1,11 @@
 import React from 'react'
+import Sidebar from '../DashboardComponents/Sidebar';
 
 function DashboardLayout() {
   return (
-    <div>DashboardLayout</div>
+    <div>
+      <Sidebar/>
+    </div>
   )
 }
 
