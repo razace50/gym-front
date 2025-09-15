@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
 import Navbar from "./components/Navbar";
@@ -13,9 +13,12 @@ import Signup from "./components/Login/Signup"; // Assuming you have a Signup co
 import DashboardLayout from "./components/layouts/DashboardLayout";
 
 function App() {
+  const location = useLocation();
+  const hideNavAndFooter = location.pathname.startsWith("/dashboard");
   return (
     <>
-      <Navbar />
+    {!hideNavAndFooter && <Navbar />}
+      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -26,9 +29,12 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        {/* Dashboard routes */}
         <Route path="/dashboard" element={<DashboardLayout/>} />
       </Routes>
-      <Footer />
+          {!hideNavAndFooter && <Footer />}
+
+      
     </>
   );
 }
