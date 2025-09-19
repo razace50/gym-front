@@ -5,7 +5,7 @@ const Sidebar: React.FC = () => {
   return (
     <div className="w-1/5 h-screen bg-black text-white flex flex-col items-center p-4">
       {/* Logo / Header */}
-      <h1 className="text-2xl font-bold mb-6 text-center">Power Zone</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">Hamro Gym</h1>
 
       {/* Profile Section */}
       <div className="flex flex-row gap-10 items-center mb-8">
