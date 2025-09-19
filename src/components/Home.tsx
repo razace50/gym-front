@@ -1,9 +1,9 @@
-import type React from "react";
+import  React from "react";
 import { Link } from "react-router-dom";
 
-type HeroSectionProps = {};
 
-const HeroSection: React.FC<HeroSectionProps> = () => {
+
+const HeroSection: React.FC = () => {
   return (
     <div className="relative overflow-hidden">
       {/* Background gradient overlay */}
