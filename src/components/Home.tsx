@@ -29,7 +29,7 @@ const HeroSection: React.FC<HeroSectionProps> = () => {
                 Join Now
               </button>
               </Link>
-              <button className="px-6 py-3 bg-transparent border border-gray-300 text-white rounded-md font-bold text-lg">
+              <button className="px-6 py-3 bg-transparent border border-gray-300 text-white rounded-md font-bold text-lg transition-transform duration-300 hover:scale-110 cursor-pointer">
                 Book a Tour
               </button>
             </div>
