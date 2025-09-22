@@ -11,6 +11,7 @@ import Contact from "./components/Contact";
 import Login from "./components/Login/Login"; // Assuming you have a Login component
 import Signup from "./components/Login/Signup"; // Assuming you have a Signup component
 import DashboardLayout from "./components/layouts/DashboardLayout";
+import Dashboard from "./components/pages/Dashboard";
 
 function App() {
   const location = useLocation();
@@ -30,7 +31,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         {/* Dashboard routes */}
-        <Route path="/dashboard" element={<DashboardLayout/>} />
+        <Route path="/dashboard" element={<DashboardLayout><Dashboard/></DashboardLayout>} />
       </Routes>
           {!hideNavAndFooter && <Footer />}
 

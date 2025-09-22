@@ -1,5 +1,6 @@
 import React from "react";
 import { Home, Users, LogOut } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Sidebar: React.FC = () => {
   return (
@@ -23,9 +24,9 @@ const Sidebar: React.FC = () => {
 
       {/* Menu Items */}
       <nav className="flex flex-col gap-3 w-full">
-        <button className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500">
+        <Link to="/dashboard" className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500">
           <Home size={20} /> Dashboard
-        </button>
+        </Link>
 
         <button className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-[#0f172a] hover:bg-[#1e293b] transition">
           <Users size={20} /> Members
