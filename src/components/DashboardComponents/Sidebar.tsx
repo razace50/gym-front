@@ -1,10 +1,22 @@
 import React from "react";
-import { Home, Users, LogOut } from "lucide-react";
+import { Home, Users, LogOut, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const Sidebar: React.FC = () => {
+interface SideBarProps {
+open: boolean;
+setOpen: (val: boolean) => void;
+}
+
+const Sidebar: React.FC<SideBarProps> = ({open, setOpen}) => {
   return (
-    <div className="w-1/5 h-screen bg-black text-white flex flex-col items-center p-4">
+    <div className={`fixed top-0 left-0 w-1/6 bg-black text-white p-4 transform transition-transform duration-300 z-50 lg:static lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full" }`}>
+      {/* CLose button (only on mobile) */}
+      <button className="lg:hidden absolute top-4 right-4 text-white"
+      onClick={()=> setOpen(false)}
+      >
+        <X size={24}/>
+
+      </button>
       {/* Logo / Header */}
       <h1 className="text-2xl font-bold mb-6 text-center">Hamro Gym</h1>
 
