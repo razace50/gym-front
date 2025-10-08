@@ -1,6 +1,8 @@
 import React from 'react'
-import StatCard from '../DashboardComponents/StatCard'
-import { AlertTriangle, BarChart2, Clock, Menu, MessageCircleQuestionIcon, User, XCircle } from 'lucide-react'
+import StatCard from '../DashboardComponents/StatCard';
+import { AlertTriangle, BarChart2, Clock, Menu, MessageCircleQuestionIcon, User, XCircle } from 'lucide-react';
+
+
 
 export default function Dashboard() {
   return (
