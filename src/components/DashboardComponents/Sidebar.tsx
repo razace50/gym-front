@@ -9,12 +9,20 @@ setOpen: (val: boolean) => void;
 
 const Sidebar: React.FC<SideBarProps> = ({open, setOpen}) => {
   return (
-    <div className={`fixed top-0 left-0 w-1/6 bg-black text-white p-4 transform transition-transform duration-300 z-50 lg:static lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full" }`}>
+    <>
+    {/* Background overlay when sidebar is open (for mobile) */}
+    {open && (
+      <div
+      className="fixed inset-0 z-40 lg:hidden"
+      onClick={() => setOpen(false)}
+      />
+    )}
+    <div className={`fixed top-0 left-0 lg:w-1/6 w-64 h-full lg:h-auto bg-black text-white p-4 transform transition-transform duration-300 z-50 lg:static lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full" }`}>
       {/* CLose button (only on mobile) */}
-      <button className="lg:hidden absolute top-4 right-4 text-white"
+      <button className="lg:hidden absolute top-5 right-4 text-white"
       onClick={()=> setOpen(false)}
       >
-        <X size={24}/>
+        <X size={30}/>
 
       </button>
       {/* Logo / Header */}
@@ -25,12 +33,12 @@ const Sidebar: React.FC<SideBarProps> = ({open, setOpen}) => {
         <img
           src="/public/images/logoDash.jpg" 
           alt="Profile"
-          className="w-30 h-20 rounded-full border-2 border-gray-700 object-cover"
+          className="lg:w-30 lg:h-20 w-16 h-16 rounded-full border-2 border-gray-700 object-cover"
         />
-        <div><p className="mt-2 text-gray-300 text-2x; font-bold">
+        <div><p className="mt-2 text-gray-300 text-2x font-bold">
           Good Evening <span className="text-yellow-400">●</span>
         </p>
-        <p className="font-semibold">admin</p></div>
+        <p className="font-semibold">Admin</p></div>
       </div>
        <hr className="w-80 border-t border-gray-500 my-10" />
 
@@ -49,6 +57,7 @@ const Sidebar: React.FC<SideBarProps> = ({open, setOpen}) => {
         </button>
       </nav>
     </div>
+    </>
   );
 };
 
