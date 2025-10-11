@@ -3,16 +3,16 @@ import StatCard from '../DashboardComponents/StatCard';
 import { AlertTriangle, BarChart2, Clock, Menu, MessageCircleQuestionIcon, User, XCircle } from 'lucide-react';
 
 interface DashboardProps{
-  toogleSidebar?: () => void;
+  toggleSidebar?: () => void;
 }
 
-export default function Dashboard({toogleSidebar}: DashboardProps) {
+export default function Dashboard({toggleSidebar}: DashboardProps) {
   return (
    <div>
     {/* Header Bar */}
     <div className='w-full h-[70px] bg-slate-950 rounded-2xl flex items-center  justify-between px-6 border-[3px] border-pink-600 p-4'>
         <Menu className='text-white cursor-pointer lg:hidden' size={30}
-        onClick={toogleSidebar}/>
+        onClick={toggleSidebar}/>
         <MessageCircleQuestionIcon className='text-white ml-auto' size={30}
         />
     </div>
