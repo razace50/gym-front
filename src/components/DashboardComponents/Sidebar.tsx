@@ -48,9 +48,9 @@ const Sidebar: React.FC<SideBarProps> = ({open, setOpen}) => {
           <Home size={20} /> Dashboard
         </Link>
 
-        <button className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-[#0f172a] hover:bg-[#1e293b] transition">
+        <Link to="/members" className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-[#0f172a] hover:bg-[#1e293b] transition">
           <Users size={20} /> Members
-        </button>
+        </Link>
 
         <button className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-[#0f172a] hover:bg-[#1e293b] transition">
           <LogOut size={20} /> Logout

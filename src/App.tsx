@@ -12,10 +12,11 @@ import Login from "./components/Login/Login"; // Assuming you have a Login compo
 import Signup from "./components/Login/Signup"; // Assuming you have a Signup component
 import DashboardLayout from "./components/layouts/DashboardLayout";
 import Dashboard from "./components/pages/Dashboard";
+import Members from "./components/pages/Members";
 
 function App() {
   const location = useLocation();
-  const hideNavAndFooter = location.pathname.startsWith("/dashboard");
+  const hideNavAndFooter = location.pathname.startsWith("/dashboard") && location.pathname.startsWith("/members");
   return (
     <>
     {!hideNavAndFooter && <Navbar />}
@@ -32,7 +33,9 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         {/* Dashboard routes */}
         <Route path="/dashboard" element={<DashboardLayout><Dashboard/></DashboardLayout>} />
+        <Route path="/members" element={<DashboardLayout><Members/></DashboardLayout>}/>
       </Routes>
+      
           {!hideNavAndFooter && <Footer />}
 
       
