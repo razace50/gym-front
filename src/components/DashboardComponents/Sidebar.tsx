@@ -40,7 +40,7 @@ const Sidebar: React.FC<SideBarProps> = ({open, setOpen}) => {
         </p>
         <p className="font-semibold">Admin</p></div>
       </div>
-       <hr className="w-80 border-t border-gray-500 my-10" />
+       <hr className="lg:w-80 sm:w-auto border-t border-gray-500 my-10" />
 
       {/* Menu Items */}
       <nav className="flex flex-col gap-3 w-full">
@@ -48,7 +48,7 @@ const Sidebar: React.FC<SideBarProps> = ({open, setOpen}) => {
           <Home size={20} /> Dashboard
         </Link>
 
-        <Link to="/members" className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-[#0f172a] hover:bg-[#1e293b] transition">
+        <Link to="/members  " className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-[#0f172a] hover:bg-[#1e293b] transition">
           <Users size={20} /> Members
         </Link>
 

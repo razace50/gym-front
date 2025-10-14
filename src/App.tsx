@@ -16,7 +16,7 @@ import Members from "./components/pages/Members";
 
 function App() {
   const location = useLocation();
-  const hideNavAndFooter = location.pathname.startsWith("/dashboard") && location.pathname.startsWith("/members");
+  const hideNavAndFooter = location.pathname.startsWith("/dashboard") || location.pathname.startsWith("/members");
   return (
     <>
     {!hideNavAndFooter && <Navbar />}
