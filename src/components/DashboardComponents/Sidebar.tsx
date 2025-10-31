@@ -26,14 +26,14 @@ const Sidebar: React.FC<SideBarProps> = ({ open, setOpen }) => {
       {/* Overlay (mobile) */}
       {open && (
         <div
-          className="fixed inset-0 z-40 lg:hidden bg-black bg-opacity-40"
+          className="fixed inset-0 z-40 lg:hidden bg-opacity-40"
           onClick={() => setOpen(false)}
         />
       )}
 
       {/* Sidebar Container */}
       <div
-        className={`fixed top-0 left-0 lg:w-1/6 w-64 h-full bg-black text-white p-4 transform transition-transform duration-300 z-50 lg:static lg:translate-x-0 ${
+        className={`fixed top-0 left-0 bottom-0 lg:w-1/6 w-64 bg-black text-white p-4 transform transition-transform duration-300 z-50 lg:static lg:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -71,7 +71,9 @@ const Sidebar: React.FC<SideBarProps> = ({ open, setOpen }) => {
             <Link
               key={item.name}
               to={item.path}
-              onClick={() => setActive(item.path)}
+              onClick={() => { setActive(item.path);
+                setOpen(false);
+              }}
               className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-all duration-300 ${
                 active === item.path
                   ? "bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg"
