@@ -19,21 +19,22 @@ export default function MemberCard({
   expiry_date,
   image,
 }: MemberCardProps) {
+  const fullName = `${first_name} ${last_name}`;
   return (
-    <div className="bg-gray-300 shadow rounded p-6 flex flex-col items-center justify-center border-[6px] border-pink-500 rounded-2xl h-60 transition-transform duration-300 hover:scale-110 cursor-pointer">
+    <div className="bg-gray-300 shadow p-6 flex flex-col items-center justify-center border-[6px] border-pink-500 rounded-2xl h-60 transition-transform duration-300 hover:scale-110 cursor-pointer">
       {/* Avatar */}
       <img
         src={
           image ||
           `https://ui-avatars.com/api/?name=${first_name}+${last_name}&background=ec4899&color=fff`
         }
-        alt={`${first_name} ${last_name}`}
+        alt={`${first_name} ${last_name}` }
         className="w-16 h-16 rounded-full border-2 border-pink-500 mb-3 object-cover"
       />
 
       {/* Name */}
       <h3 className="text-gray-700 font-semibold text-lg">
-        {first_name} {last_name}
+        {fullName || `${first_name} ${last_name}`}
       </h3>
 
       {/* Membership Info */}
