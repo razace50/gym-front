@@ -1,16 +1,58 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import api from "../../api/api";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Logging in with:", { email, password });
-    // Add login API call here
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    const response = await api.post("/auth/login", {
+      email,
+      password,
+    });
+
+    localStorage.setItem(
+      "token",
+      response.data.token
+    );
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(response.data.user)
+    );
+
+    alert("Login successful");
+
+    window.location.href = "/dashboard";
+  }  catch (error: unknown) {
+  console.error(error);
+
+  let message = "Login failed";
+
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "response" in error
+  ) {
+    const axiosError = error as {
+      response?: {
+        data?: {
+          message?: string;
+        };
+      };
+    };
+
+    message = axiosError.response?.data?.message || message;
+  }
+
+  alert(`Login failed: ${message}`);
+}
+};
 
   return (
     <div className="lg:min-h-fit sm:min-h-full flex items-center justify-center py-6 bg-gray-950">
