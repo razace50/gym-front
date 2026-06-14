@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import api from "../../api/api";
 
 const Signup: React.FC = () => {
   const [name, setName] = useState("");
@@ -7,11 +8,23 @@ const Signup: React.FC = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Signing up with:", { name, email, password });
-    // Add signup API call here
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    await api.post("/auth/signup", {
+      fullName: name,
+      email,
+      password,
+    });
+
+    alert("Signup successful. Please login.");
+    window.location.href = "/login";
+  } catch (error) {
+    console.error(error);
+    alert("Signup failed");
+  }
+};
 
   return (
     <div className="lg:min-h-fit sm:min-h-full flex items-center justify-center py-6 bg-gray-950">

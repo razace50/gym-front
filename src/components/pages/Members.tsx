@@ -6,8 +6,7 @@ type Member = {
   id: number;
   joinDate: string;
   user: {
-    firstName: string;
-    lastName: string;
+    fullName: string;
     email: string;
     phone?: string;
   };
@@ -67,8 +66,8 @@ export default function DashboardMembers() {
         {currentMembers.map((member) => (
           <MemberCard
   key={member.id}
-  first_name={member.user.firstName}
-  last_name={member.user.lastName}
+  first_name={member.user.fullName}
+  last_name=""
   membership_type={member.membership?.name || "No Plan"}
   membership_status="Active"
   join_date={new Date(member.joinDate).toLocaleDateString()}
