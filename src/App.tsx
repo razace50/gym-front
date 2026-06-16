@@ -68,7 +68,7 @@ function App() {
         <Route
           path="/members"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST", "TRAINER"]}>
               <DashboardLayout>
                 <Members />
               </DashboardLayout>
@@ -79,7 +79,7 @@ function App() {
         <Route
           path="/dashboard-trainers"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST"]}>
               <DashboardLayout>
                 <TrainersPage />
               </DashboardLayout>
@@ -90,7 +90,7 @@ function App() {
         <Route
           path="/dashboard-memberships"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST"]}>
               <DashboardLayout>
                 <MembershipsPage />
               </DashboardLayout>
@@ -101,7 +101,7 @@ function App() {
         <Route
           path="/attendance"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST", "TRAINER"]}>
               <DashboardLayout>
                 <AttendancePage />
               </DashboardLayout>
@@ -112,7 +112,7 @@ function App() {
         <Route
           path="/admins"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
               <DashboardLayout>
                 <Admins />
               </DashboardLayout>
@@ -123,7 +123,7 @@ function App() {
         <Route
           path="/payments"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST"]}>
               <DashboardLayout>
                 <Payment />
               </DashboardLayout>
@@ -134,7 +134,7 @@ function App() {
         <Route
           path="/settings"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
               <DashboardLayout>
                 <Settings />
               </DashboardLayout>
