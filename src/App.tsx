@@ -8,19 +8,41 @@ import Trainers from "./components/Trainers";
 import Services from "./components/Services";
 import Membership from "./components/Membership";
 import Contact from "./components/Contact";
-import Login from "./components/Login/Login"; // Assuming you have a Login component
-import Signup from "./components/Login/Signup"; // Assuming you have a Signup component
+import Login from "./components/Login/Login";
+import Signup from "./components/Login/Signup";
 import DashboardLayout from "./components/layouts/DashboardLayout";
 import Dashboard from "./components/pages/Dashboard";
 import Members from "./components/pages/Members";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Admins from "./components/pages/Admins";
+import Payment from "./components/pages/Payment";
+import Settings from "./components/pages/Settings";
+import TrainersPage from "./components/pages/TrainersPage";
+import MembershipsPage from "./components/pages/MembershipsPage";
+import AttendancePage from "./components/pages/AttendancePage";
 
 function App() {
   const location = useLocation();
-  const hideNavAndFooter = location.pathname.startsWith("/dashboard") || location.pathname===("/members");
+
+  const dashboardPaths = [
+    "/dashboard",
+    "/members",
+    "/admins",
+    "/payments",
+    "/settings",
+    "/dashboard-trainers",
+    "/dashboard-memberships",
+    "/attendance",
+  ];
+
+  const hideNavAndFooter = dashboardPaths.some((path) =>
+    location.pathname.startsWith(path)
+  );
+
   return (
     <>
-    {!hideNavAndFooter && <Navbar />}
-      
+      {!hideNavAndFooter && <Navbar />}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -31,14 +53,97 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        {/* Dashboard routes */}
-        <Route path="/dashboard" element={<DashboardLayout><Dashboard/></DashboardLayout>} />
-        <Route path="/members" element={<DashboardLayout><Members/></DashboardLayout>}/>
-      </Routes>
-      
-          {!hideNavAndFooter && <Footer />}
 
-      
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Dashboard />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/members"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Members />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard-trainers"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <TrainersPage />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard-memberships"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <MembershipsPage />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/attendance"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <AttendancePage />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admins"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Admins />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/payments"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Payment />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Settings />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+
+      {!hideNavAndFooter && <Footer />}
     </>
   );
 }
