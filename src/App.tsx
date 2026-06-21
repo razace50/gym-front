@@ -36,7 +36,7 @@ function App() {
   ];
 
   const hideNavAndFooter = dashboardPaths.some((path) =>
-    location.pathname.startsWith(path)
+    location.pathname === path || location.pathname.startsWith(path + "/")
   );
 
   return (
