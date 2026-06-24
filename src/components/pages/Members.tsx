@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../../api/api";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 type Membership = {
   id: number;
@@ -56,6 +56,13 @@ export default function Members() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("ALL");
+
+  const [renewMemberId, setRenewMemberId] = useState<number | null>(null);
+  const [renewPlanId, setRenewPlanId] = useState("");
+  const [renewAmount, setRenewAmount] = useState("");
+
   const fetchData = async () => {
     try {
       const [membersRes, membershipsRes, trainersRes] = await Promise.all([
@@ -92,11 +99,11 @@ export default function Members() {
         email: form.email,
         password: form.password,
         phone: form.phone,
-        age: form.age,
+        age: form.age ? Number(form.age) : null,
         gender: form.gender,
         address: form.address,
-        membershipId: form.membershipId || null,
-        trainerId: form.trainerId || null,
+        membershipId: form.membershipId ? Number(form.membershipId) : null,
+        trainerId: form.trainerId ? Number(form.trainerId) : null,
       };
 
       if (editingId) {
@@ -145,10 +152,28 @@ export default function Members() {
     }
   };
 
-  const renewMember = async (id: number) => {
+  const openRenewModal = (member: Member) => {
+    setRenewMemberId(member.id);
+    setRenewPlanId(member.membership?.id ? String(member.membership.id) : "");
+    setRenewAmount(member.membership?.price ? String(member.membership.price) : "");
+  };
+
+  const submitRenewal = async () => {
+    if (!renewMemberId || !renewPlanId || !renewAmount) {
+      alert("Please select plan and amount");
+      return;
+    }
+
     try {
-      await api.patch(`/members/${id}/renew`);
-      alert("Membership renewed");
+      await api.post(`/renewals/${renewMemberId}`, {
+        newMembershipId: Number(renewPlanId),
+        amount: Number(renewAmount),
+      });
+
+      alert("Membership renewed and history saved");
+      setRenewMemberId(null);
+      setRenewPlanId("");
+      setRenewAmount("");
       fetchData();
     } catch (error: any) {
       alert(error?.response?.data?.message || "Failed to renew membership");
@@ -163,6 +188,24 @@ export default function Members() {
       alert(error?.response?.data?.message || "Failed to update status");
     }
   };
+
+  const filteredMembers = members.filter((member) => {
+    const keyword = search.toLowerCase();
+
+    const matchesSearch =
+      member.user.fullName.toLowerCase().includes(keyword) ||
+      member.user.email.toLowerCase().includes(keyword) ||
+      (member.user.phone || "").toLowerCase().includes(keyword);
+
+    const matchesStatus =
+      statusFilter === "ALL" || member.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
+  const selectedRenewPlan = memberships.find(
+    (membership) => String(membership.id) === renewPlanId
+  );
 
   return (
     <div className="p-6 text-white">
@@ -208,6 +251,27 @@ export default function Members() {
         )}
       </form>
 
+      <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <input
+          className="rounded bg-slate-800 p-3"
+          placeholder="Search by name, email or phone"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <select
+          className="rounded bg-slate-800 p-3"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="ALL">All Status</option>
+          <option value="ACTIVE">ACTIVE</option>
+          <option value="INACTIVE">INACTIVE</option>
+          <option value="SUSPENDED">SUSPENDED</option>
+          <option value="EXPIRED">EXPIRED</option>
+        </select>
+      </div>
+
       <div className="overflow-x-auto rounded-xl bg-slate-800">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-950">
@@ -222,8 +286,9 @@ export default function Members() {
               <th className="p-3">Actions</th>
             </tr>
           </thead>
+
           <tbody>
-            {members.map((member) => (
+            {filteredMembers.map((member) => (
               <tr key={member.id} className="border-t border-slate-700">
                 <td className="p-3">{member.user.fullName}</td>
                 <td className="p-3">{member.user.email}</td>
@@ -240,21 +305,84 @@ export default function Members() {
                   </select>
                 </td>
                 <td className="flex flex-wrap gap-2 p-3">
-                  <Link
-  to={`/members/${member.id}`}
-  className="rounded bg-purple-600 px-3 py-1"
->
-  View
-</Link>
+                  <Link to={`/members/${member.id}`} className="rounded bg-purple-600 px-3 py-1">
+                    View
+                  </Link>
                   <button onClick={() => editMember(member)} className="rounded bg-blue-600 px-3 py-1">Edit</button>
-                  <button onClick={() => renewMember(member.id)} className="rounded bg-green-600 px-3 py-1">Renew</button>
+                  <button onClick={() => openRenewModal(member)} className="rounded bg-green-600 px-3 py-1">Renew</button>
                   <button onClick={() => deleteMember(member.id)} className="rounded bg-red-600 px-3 py-1">Delete</button>
                 </td>
               </tr>
             ))}
+
+            {filteredMembers.length === 0 && (
+              <tr>
+                <td colSpan={8} className="p-5 text-center text-gray-400">
+                  No members found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
+
+      {renewMemberId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="w-full max-w-md rounded-xl bg-slate-800 p-6">
+            <h2 className="mb-4 text-xl font-bold">Renew Membership</h2>
+
+            <select
+              className="mb-4 w-full rounded bg-slate-900 p-3"
+              value={renewPlanId}
+              onChange={(e) => {
+                setRenewPlanId(e.target.value);
+                const plan = memberships.find(
+                  (membership) => String(membership.id) === e.target.value
+                );
+                setRenewAmount(plan?.price ? String(plan.price) : "");
+              }}
+            >
+              <option value="">Select Plan</option>
+              {memberships.map((membership) => (
+                <option key={membership.id} value={membership.id}>
+                  {membership.name} - {membership.duration} month - ${membership.price}
+                </option>
+              ))}
+            </select>
+
+            <input
+              className="mb-4 w-full rounded bg-slate-900 p-3"
+              type="number"
+              placeholder="Amount"
+              value={renewAmount}
+              onChange={(e) => setRenewAmount(e.target.value)}
+            />
+
+            {selectedRenewPlan && (
+              <p className="mb-4 text-sm text-gray-300">
+                Selected: {selectedRenewPlan.name}, duration{" "}
+                {selectedRenewPlan.duration} month
+              </p>
+            )}
+
+            <div className="flex gap-3">
+              <button
+                onClick={submitRenewal}
+                className="flex-1 rounded bg-green-600 p-3 font-bold"
+              >
+                Confirm Renew
+              </button>
+
+              <button
+                onClick={() => setRenewMemberId(null)}
+                className="flex-1 rounded bg-gray-600 p-3 font-bold"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

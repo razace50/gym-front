@@ -42,8 +42,8 @@ function App() {
     "/notifications",
   ];
 
-  const hideNavAndFooter = dashboardPaths.some((path) =>
-    location.pathname === path || location.pathname.startsWith(path + "/")
+  const hideNavAndFooter = dashboardPaths.some(
+    (path) => location.pathname === path || location.pathname.startsWith(path + "/")
   );
 
   return (
@@ -64,7 +64,7 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST"]}>
               <DashboardLayout>
                 <Dashboard />
               </DashboardLayout>
@@ -78,6 +78,17 @@ function App() {
             <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST", "TRAINER"]}>
               <DashboardLayout>
                 <Members />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/members/:id"
+          element={
+            <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST", "TRAINER", "MEMBER"]}>
+              <DashboardLayout>
+                <MemberDetails />
               </DashboardLayout>
             </ProtectedRoute>
           }
@@ -139,6 +150,17 @@ function App() {
         />
 
         <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST"]}>
+              <DashboardLayout>
+                <NotificationsPage />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/settings"
           element={
             <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
@@ -148,61 +170,28 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-  path="/members/:id"
-  element={
-    <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST", "TRAINER", "MEMBER"]}>
-      <DashboardLayout>
-        <MemberDetails />
-      </DashboardLayout>
-    </ProtectedRoute>
-  }
-/>
-<Route
-  path="/dashboard-attendance"
-  element={
-    <ProtectedRoute
-      allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST", "TRAINER"]}
-    >
-      <DashboardLayout>
-        <AttendancePage />
-      </DashboardLayout>
-    </ProtectedRoute>
-  }
-/>
-<Route
-  path="/trainer-dashboard"
-  element={
-    <ProtectedRoute allowedRoles={["TRAINER"]}>
-      <DashboardLayout>
-        <TrainerDashboard />
-      </DashboardLayout>
-    </ProtectedRoute>
-  }
-/>
 
-<Route
-  path="/member-dashboard"
-  element={
-    <ProtectedRoute allowedRoles={["MEMBER"]}>
-      <DashboardLayout>
-        <MemberDashboard />
-      </DashboardLayout>
-    </ProtectedRoute>
-  }
-/>
-<Route
-  path="/notifications"
-  element={
-    <ProtectedRoute
-      allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST"]}
-    >
-      <DashboardLayout>
-        <NotificationsPage />
-      </DashboardLayout>
-    </ProtectedRoute>
-  }
-/>
+        <Route
+          path="/trainer-dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["TRAINER"]}>
+              <DashboardLayout>
+                <TrainerDashboard />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/member-dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["MEMBER"]}>
+              <DashboardLayout>
+                <MemberDashboard />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
       </Routes>
 
       {!hideNavAndFooter && <Footer />}
