@@ -56,7 +56,7 @@ export default function MembershipsPage() {
       </form>
 
       <div className="overflow-x-auto rounded-xl bg-slate-800">
-        <table className="w-full text-left">
+        <table className="w-full text-left">4
           <thead className="bg-slate-950">
             <tr>
               <th className="p-3">Name</th>

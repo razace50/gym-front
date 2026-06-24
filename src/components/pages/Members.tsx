@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../../api/api";
+import {Link} from "react-router-dom";
 
 type Membership = {
   id: number;
@@ -239,6 +240,12 @@ export default function Members() {
                   </select>
                 </td>
                 <td className="flex flex-wrap gap-2 p-3">
+                  <Link
+  to={`/members/${member.id}`}
+  className="rounded bg-purple-600 px-3 py-1"
+>
+  View
+</Link>
                   <button onClick={() => editMember(member)} className="rounded bg-blue-600 px-3 py-1">Edit</button>
                   <button onClick={() => renewMember(member.id)} className="rounded bg-green-600 px-3 py-1">Renew</button>
                   <button onClick={() => deleteMember(member.id)} className="rounded bg-red-600 px-3 py-1">Delete</button>

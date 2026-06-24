@@ -20,6 +20,9 @@ import Settings from "./components/pages/Settings";
 import TrainersPage from "./components/pages/TrainersPage";
 import MembershipsPage from "./components/pages/MembershipsPage";
 import AttendancePage from "./components/pages/AttendancePage";
+import MemberDetails from "./components/pages/MemberDetails";
+import TrainerDashboard from "./components/pages/TrainerDashboard";
+import MemberDashboard from "./components/pages/MemberDashboard";
 
 function App() {
   const location = useLocation();
@@ -30,6 +33,8 @@ function App() {
     "/admins",
     "/payments",
     "/settings",
+    "/trainer-dashboard",
+    "/member-dashboard",
     "/dashboard-trainers",
     "/dashboard-memberships",
     "/attendance",
@@ -141,6 +146,49 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+  path="/members/:id"
+  element={
+    <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST", "TRAINER", "MEMBER"]}>
+      <DashboardLayout>
+        <MemberDetails />
+      </DashboardLayout>
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/dashboard-attendance"
+  element={
+    <ProtectedRoute
+      allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST", "TRAINER"]}
+    >
+      <DashboardLayout>
+        <AttendancePage />
+      </DashboardLayout>
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/trainer-dashboard"
+  element={
+    <ProtectedRoute allowedRoles={["TRAINER"]}>
+      <DashboardLayout>
+        <TrainerDashboard />
+      </DashboardLayout>
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/member-dashboard"
+  element={
+    <ProtectedRoute allowedRoles={["MEMBER"]}>
+      <DashboardLayout>
+        <MemberDashboard />
+      </DashboardLayout>
+    </ProtectedRoute>
+  }
+/>
       </Routes>
 
       {!hideNavAndFooter && <Footer />}

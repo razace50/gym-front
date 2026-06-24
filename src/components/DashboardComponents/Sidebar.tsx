@@ -35,6 +35,16 @@ const Sidebar: React.FC<SideBarProps> = ({ open, setOpen }) => {
     { name: "Admins", icon: <Shield size={20} />, path: "/admins" },
     { name: "Payments", icon: <CreditCard size={20} />, path: "/payments" },
     { name: "Settings", icon: <Settings size={20} />, path: "/settings" },
+    {
+      name: "Trainer Dashboard",
+      path: "/trainer-dashboard",
+      roles: ["TRAINER"],
+    },
+    {
+      name: "My Dashboard",
+      path: "/member-dashboard",
+      roles: ["MEMBER"],
+    },
   ];
 
   const handleLogout = () => {
