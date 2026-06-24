@@ -45,6 +45,11 @@ const Sidebar: React.FC<SideBarProps> = ({ open, setOpen }) => {
       path: "/member-dashboard",
       roles: ["MEMBER"],
     },
+    {
+  name: "Notifications",
+  path: "/notifications",
+  roles: ["SUPER_ADMIN", "ADMIN", "RECEPTIONIST"],
+},
   ];
 
   const handleLogout = () => {

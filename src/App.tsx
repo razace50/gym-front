@@ -23,6 +23,7 @@ import AttendancePage from "./components/pages/AttendancePage";
 import MemberDetails from "./components/pages/MemberDetails";
 import TrainerDashboard from "./components/pages/TrainerDashboard";
 import MemberDashboard from "./components/pages/MemberDashboard";
+import NotificationsPage from "./components/pages/NotificationsPage";
 
 function App() {
   const location = useLocation();
@@ -38,6 +39,7 @@ function App() {
     "/dashboard-trainers",
     "/dashboard-memberships",
     "/attendance",
+    "/notifications",
   ];
 
   const hideNavAndFooter = dashboardPaths.some((path) =>
@@ -185,6 +187,18 @@ function App() {
     <ProtectedRoute allowedRoles={["MEMBER"]}>
       <DashboardLayout>
         <MemberDashboard />
+      </DashboardLayout>
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/notifications"
+  element={
+    <ProtectedRoute
+      allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST"]}
+    >
+      <DashboardLayout>
+        <NotificationsPage />
       </DashboardLayout>
     </ProtectedRoute>
   }
