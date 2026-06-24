@@ -1,108 +1,119 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
 
+type LoginResponse = {
+  message: string;
+  token: string;
+  user: {
+    id: number;
+    fullName: string;
+    email: string;
+    phone?: string | null;
+    role: "SUPER_ADMIN" | "ADMIN" | "RECEPTIONIST" | "TRAINER" | "MEMBER";
+  };
+};
+
 const Login: React.FC = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const response = await api.post("/auth/login", {
-      email,
-      password,
-    });
+    try {
+      const response = await api.post<LoginResponse>("/auth/login", {
+        email,
+        password,
+      });
 
-    localStorage.setItem(
-      "token",
-      response.data.token
-    );
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
 
-    localStorage.setItem(
-      "user",
-      JSON.stringify(response.data.user)
-    );
+      const role = response.data.user.role;
 
-    alert("Login successful");
+      if (role === "TRAINER") {
+        navigate("/trainer-dashboard", { replace: true });
+      } else if (role === "MEMBER") {
+        navigate("/member-dashboard", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
+    } catch (error: unknown) {
+      console.error(error);
 
-    window.location.href = "/dashboard";
-  }  catch (error: unknown) {
-  console.error(error);
+      let message = "Login failed";
 
-  let message = "Login failed";
-
-  if (
-    typeof error === "object" &&
-    error !== null &&
-    "response" in error
-  ) {
-    const axiosError = error as {
-      response?: {
-        data?: {
-          message?: string;
+      if (typeof error === "object" && error !== null && "response" in error) {
+        const axiosError = error as {
+          response?: {
+            data?: {
+              message?: string;
+            };
+          };
         };
-      };
-    };
 
-    message = axiosError.response?.data?.message || message;
-  }
+        message = axiosError.response?.data?.message || message;
+      }
 
-  alert(`Login failed: ${message}`);
-}
-};
+      alert(`Login failed: ${message}`);
+    }
+  };
 
   return (
-    <div className="lg:min-h-fit sm:min-h-full flex items-center justify-center py-6 bg-gray-950">
+    <div className="flex items-center justify-center bg-gray-950 py-6 sm:min-h-full lg:min-h-fit">
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-900 p-8 rounded shadow-md w-full max-w-sm"
+        className="w-full max-w-sm rounded bg-gray-900 p-8 shadow-md"
       >
-        <h2 className="text-2xl text-white font-bold mb-6 text-center">
+        <h2 className="mb-6 text-center text-2xl font-bold text-white">
           Login
         </h2>
-        {/* Email input */}
+
         <div className="mb-4">
           <label className="block text-white">Email</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border border-gray-300 bg-gray-800 rounded mt-1 text-white"
+            className="mt-1 w-full rounded border border-gray-300 bg-gray-800 p-2 text-white"
             placeholder="Enter your Email"
             required
           />
         </div>
-        {/* Password input field */}
-        <div className="mb-6 relative">
+
+        <div className="relative mb-6">
           <label className="block text-white">Password</label>
           <input
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded mt-1 bg-gray-800 text-white"
+            className="mt-1 w-full rounded border border-gray-300 bg-gray-800 p-2 pr-10 text-white"
             placeholder="Enter your Password"
             required
-            
           />
-          <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 pt-3 text-gray-400 hover:text-white"
-          >
-            {showPassword ? <EyeOff size={20} /> : <Eye size={20}/>}
 
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-9 text-gray-400 hover:text-white"
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
+
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          className="w-full rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
         >
           Login
         </button>
-        <p className="text-center text-sm text-white mt-4">
+
+        <p className="mt-4 text-center text-sm text-white">
           New user?{" "}
           <a href="/signup" className="text-blue-500 hover:underline">
             Sign up
