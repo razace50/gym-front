@@ -1,4 +1,3 @@
-import React from 'react'
 
 interface MemberCardProps {
   first_name: string;

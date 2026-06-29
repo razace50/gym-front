@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import StatCard from "../DashboardComponents/StatCard";
+import Chart from "../DashboardComponents/Chart";
 import {
   AlertTriangle,
   BarChart2,
@@ -25,6 +26,11 @@ type DashboardStats = {
   recentPayments: any[];
   expiringMembers: any[];
   todayCheckIns: any[];
+  revenueChart: any[];
+  memberGrowthChart: any[];
+  membershipDistribution: any[];
+  paymentStatusChart: any[];
+  activityLogs: any[];
 };
 
 export default function Dashboard() {
@@ -64,15 +70,71 @@ export default function Dashboard() {
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <Chart
+          title="Revenue Chart"
+          type="line"
+          data={stats.revenueChart}
+          xKey="month"
+          yKey="revenue"
+        />
+
+        <Chart
+          title="Member Growth"
+          type="bar"
+          data={stats.memberGrowthChart}
+          xKey="month"
+          yKey="members"
+        />
+
+        <Chart
+          title="Membership Distribution"
+          type="pie"
+          data={stats.membershipDistribution}
+          xKey="name"
+          yKey="value"
+        />
+
+        <Chart
+          title="Payment Status"
+          type="bar"
+          data={stats.paymentStatusChart}
+          xKey="status"
+          yKey="count"
+        />
+      </div>
+
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <Section title="Recent Activities">
+          {stats.activityLogs.map((activity) => (
+            <Row
+              key={activity.id}
+              left={activity.description}
+              right={new Date(activity.createdAt).toLocaleString()}
+            />
+          ))}
+
+          {stats.activityLogs.length === 0 && (
+            <p className="text-gray-400">No recent activities yet.</p>
+          )}
+        </Section>
+
         <Section title="Recent Joined Members">
           {stats.recentMembers.map((member) => (
-            <Row key={member.id} left={member.user.fullName} right={member.membership?.name || "No Plan"} />
+            <Row
+              key={member.id}
+              left={member.user.fullName}
+              right={member.createdBy ? `Added by ${member.createdBy.fullName}` : member.membership?.name || "No Plan"}
+            />
           ))}
         </Section>
 
         <Section title="Recent Payments">
           {stats.recentPayments.map((payment) => (
-            <Row key={payment.id} left={payment.member.user.fullName} right={`$${payment.amount} - ${payment.status}`} />
+            <Row
+              key={payment.id}
+              left={payment.member.user.fullName}
+              right={`$${payment.amount} - ${payment.status}`}
+            />
           ))}
         </Section>
 
@@ -117,9 +179,9 @@ function Section({
 
 function Row({ left, right }: { left: string; right: string }) {
   return (
-    <div className="flex justify-between rounded-lg bg-slate-900 p-3">
+    <div className="flex justify-between gap-4 rounded-lg bg-slate-900 p-3">
       <span>{left}</span>
-      <span className="text-gray-300">{right}</span>
+      <span className="shrink-0 text-gray-300">{right}</span>
     </div>
   );
 }

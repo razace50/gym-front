@@ -34,6 +34,16 @@ type Member = {
   };
   membership?: Membership | null;
   trainer?: Trainer | null;
+  createdBy?: {
+    fullName: string;
+    email: string;
+    role: string;
+  } | null;
+  updatedBy?: {
+    fullName: string;
+    email: string;
+    role: string;
+  } | null;
 };
 
 const emptyForm = {
@@ -283,6 +293,7 @@ export default function Members() {
               <th className="p-3">Trainer</th>
               <th className="p-3">Expiry</th>
               <th className="p-3">Status</th>
+              <th className="p-3">Added By</th>
               <th className="p-3">Actions</th>
             </tr>
           </thead>
@@ -304,6 +315,11 @@ export default function Members() {
                     <option value="EXPIRED">EXPIRED</option>
                   </select>
                 </td>
+                <td className="p-3">
+                  {member.createdBy
+                    ? `${member.createdBy.fullName} (${member.createdBy.role})`
+                    : "N/A"}
+                </td>
                 <td className="flex flex-wrap gap-2 p-3">
                   <Link to={`/members/${member.id}`} className="rounded bg-purple-600 px-3 py-1">
                     View
@@ -317,7 +333,7 @@ export default function Members() {
 
             {filteredMembers.length === 0 && (
               <tr>
-                <td colSpan={8} className="p-5 text-center text-gray-400">
+                <td colSpan={9} className="p-5 text-center text-gray-400">
                   No members found.
                 </td>
               </tr>

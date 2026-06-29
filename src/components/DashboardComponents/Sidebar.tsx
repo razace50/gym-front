@@ -11,6 +11,10 @@ import {
   Ticket,
   Users,
   X,
+  BarChart3,
+  ClipboardList,
+  TrendingUp,
+  Wallet,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -99,6 +103,30 @@ const Sidebar: React.FC<SideBarProps> = ({ open, setOpen }) => {
       path: "/settings",
       roles: ["SUPER_ADMIN", "ADMIN"],
     },
+    {
+  name: "Reports",
+  icon: <BarChart3 size={20} />,
+  path: "/reports",
+  roles: ["SUPER_ADMIN", "ADMIN"],
+},
+    {
+      name: "Progress",
+      icon: <TrendingUp size={20} />,
+      path: "/progress",
+      roles: ["SUPER_ADMIN", "ADMIN", "TRAINER", "MEMBER"],
+    },
+    {
+      name: "Workout Plans",
+      icon: <ClipboardList size={20} />,
+      path: "/workout-plans",
+      roles: ["SUPER_ADMIN", "ADMIN", "TRAINER", "MEMBER"],
+    },
+    {
+  name: "Expenses",
+  icon: <Wallet size={20} />,
+  path: "/expenses",
+  roles: ["SUPER_ADMIN", "ADMIN"],
+},
   ];
 
   const allowedMenuItems = menuItems.filter((item) =>

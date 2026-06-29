@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import api from "../../api/api";
 
+const backendUrl = "http://localhost:5000";
+
 export default function Settings() {
   const [form, setForm] = useState({
     gymName: "",
     logoUrl: "",
+    logoFile: null as File | null,
+    currentLogoFile: "",
     phone: "",
     email: "",
     address: "",
@@ -16,21 +20,19 @@ export default function Settings() {
 
   useEffect(() => {
     const fetchSettings = async () => {
-      try {
-        const res = await api.get("/settings");
-        setForm({
-          gymName: res.data.gymName || "",
-          logoUrl: res.data.logoUrl || "",
-          phone: res.data.phone || "",
-          email: res.data.email || "",
-          address: res.data.address || "",
-          currency: res.data.currency || "AUD",
-          openingHours: res.data.openingHours || "",
-        });
-      } catch (error) {
-        console.error(error);
-        alert("Failed to load settings");
-      }
+      const res = await api.get("/settings");
+
+      setForm({
+        gymName: res.data.gymName || "",
+        logoUrl: res.data.logoUrl || "",
+        logoFile: null,
+        currentLogoFile: res.data.logoFile || "",
+        phone: res.data.phone || "",
+        email: res.data.email || "",
+        address: res.data.address || "",
+        currency: res.data.currency || "AUD",
+        openingHours: res.data.openingHours || "",
+      });
     };
 
     fetchSettings();
@@ -41,7 +43,26 @@ export default function Settings() {
     setLoading(true);
 
     try {
-      await api.patch("/settings", form);
+      const formData = new FormData();
+
+      formData.append("gymName", form.gymName);
+      formData.append("logoUrl", form.logoUrl);
+      formData.append("phone", form.phone);
+      formData.append("email", form.email);
+      formData.append("address", form.address);
+      formData.append("currency", form.currency);
+      formData.append("openingHours", form.openingHours);
+
+      if (form.logoFile) {
+        formData.append("logoFile", form.logoFile);
+      }
+
+      await api.patch("/settings", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       alert("Settings updated successfully");
     } catch (error: any) {
       alert(error?.response?.data?.message || "Failed to update settings");
@@ -49,6 +70,15 @@ export default function Settings() {
       setLoading(false);
     }
   };
+
+  const logoPreview =
+    form.logoFile
+      ? URL.createObjectURL(form.logoFile)
+      : form.logoUrl
+      ? form.logoUrl
+      : form.currentLogoFile
+      ? `${backendUrl}${form.currentLogoFile}`
+      : "";
 
   return (
     <div className="p-6 text-white">
@@ -70,8 +100,42 @@ export default function Settings() {
           className="rounded bg-slate-900 p-3"
           placeholder="Logo URL"
           value={form.logoUrl}
-          onChange={(e) => setForm({ ...form, logoUrl: e.target.value })}
+          onChange={(e) =>
+            setForm({ ...form, logoUrl: e.target.value, logoFile: null })
+          }
         />
+
+        <div>
+          <label className="mb-2 block text-sm text-gray-300">
+            Or Upload Logo File
+          </label>
+
+          <input
+            type="file"
+            accept=".jpg,.jpeg,.png,.webp"
+            className="w-full rounded bg-slate-900 p-3"
+            onChange={(e) => {
+              if (e.target.files?.[0]) {
+                setForm({
+                  ...form,
+                  logoFile: e.target.files[0],
+                  logoUrl: "",
+                });
+              }
+            }}
+          />
+        </div>
+
+        {logoPreview && (
+          <div>
+            <p className="mb-2 text-sm text-gray-300">Logo Preview</p>
+            <img
+              src={logoPreview}
+              alt="Gym Logo"
+              className="h-24 w-24 rounded bg-white object-cover"
+            />
+          </div>
+        )}
 
         <input
           className="rounded bg-slate-900 p-3"
@@ -111,14 +175,6 @@ export default function Settings() {
           value={form.openingHours}
           onChange={(e) => setForm({ ...form, openingHours: e.target.value })}
         />
-
-        {form.logoUrl && (
-          <img
-            src={form.logoUrl}
-            alt="Gym Logo"
-            className="h-24 w-24 rounded object-cover"
-          />
-        )}
 
         <button
           disabled={loading}

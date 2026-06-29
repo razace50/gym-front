@@ -24,6 +24,10 @@ import MemberDetails from "./components/pages/MemberDetails";
 import TrainerDashboard from "./components/pages/TrainerDashboard";
 import MemberDashboard from "./components/pages/MemberDashboard";
 import NotificationsPage from "./components/pages/NotificationsPage";
+import ReportsPage from "./components/pages/ReportsPage";
+import WorkoutPlansPage from "./components/pages/WorkoutPlansPage";
+import ProgressPage from "./components/pages/ProgressPage";
+import ExpensesPage from "./components/pages/ExpensesPage";
 
 function App() {
   const location = useLocation();
@@ -40,6 +44,10 @@ function App() {
     "/dashboard-memberships",
     "/attendance",
     "/notifications",
+    "/reports",
+    "/workout-plans",
+    "/progress",
+    "/expenses",
   ];
 
   const hideNavAndFooter = dashboardPaths.some(
@@ -192,6 +200,48 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+  path="/reports"
+  element={
+    <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
+      <DashboardLayout>
+        <ReportsPage />
+      </DashboardLayout>
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/workout-plans"
+  element={
+    <ProtectedRoute
+      allowedRoles={["SUPER_ADMIN", "ADMIN", "TRAINER", "MEMBER"]}
+    >
+      <DashboardLayout>
+        <WorkoutPlansPage />
+      </DashboardLayout>
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/progress"
+  element={
+    <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN", "TRAINER", "MEMBER"]}>
+      <DashboardLayout>
+        <ProgressPage />
+      </DashboardLayout>
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/expenses"
+  element={
+    <ProtectedRoute allowedRoles={["SUPER_ADMIN", "ADMIN", "RECEPTIONIST"]}>
+      <DashboardLayout>
+        <ExpensesPage />
+      </DashboardLayout>
+    </ProtectedRoute>
+  }
+/>
       </Routes>
 
       {!hideNavAndFooter && <Footer />}
