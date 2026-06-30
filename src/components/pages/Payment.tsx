@@ -60,6 +60,20 @@ export default function Payment() {
     fetchData();
   };
 
+  const updatePaymentStatus = async (id: number, status: string) => {
+    await api.patch(`/payments/${id}/status`, { status });
+    fetchData();
+  };
+
+  const deletePayment = async (id: number) => {
+    const confirmed = confirm("Are you sure you want to delete this payment?");
+
+    if (!confirmed) return;
+
+    await api.delete(`/payments/${id}`);
+    fetchData();
+  };
+
   const printReceipt = (payment: Payment) => {
     const receiptWindow = window.open("", "_blank");
 
@@ -79,7 +93,9 @@ export default function Payment() {
           <p><strong>Email:</strong> ${payment.member.user.email}</p>
           <p><strong>Amount:</strong> $${payment.amount}</p>
           <p><strong>Status:</strong> ${payment.status}</p>
-          <p><strong>Date:</strong> ${new Date(payment.createdAt).toLocaleString()}</p>
+          <p><strong>Date:</strong> ${new Date(
+            payment.createdAt
+          ).toLocaleString()}</p>
           <hr />
           <p>Thank you for your payment.</p>
           <script>
@@ -136,6 +152,7 @@ export default function Payment() {
           <option value="PAID">PAID</option>
           <option value="PENDING">PENDING</option>
           <option value="FAILED">FAILED</option>
+          <option value="REFUNDED">REFUNDED</option>
         </select>
 
         <button className="rounded bg-pink-600 p-3 font-bold hover:bg-pink-700">
@@ -153,6 +170,7 @@ export default function Payment() {
           <option value="PAID">Paid</option>
           <option value="PENDING">Pending</option>
           <option value="FAILED">Failed</option>
+          <option value="REFUNDED">Refunded</option>
         </select>
       </div>
 
@@ -170,25 +188,65 @@ export default function Payment() {
           </thead>
 
           <tbody>
-            {filteredPayments.map((payment) => (
-              <tr key={payment.id} className="border-t border-slate-700">
-                <td className="p-3">GYM-{payment.id}</td>
-                <td className="p-3">{payment.member.user.fullName}</td>
-                <td className="p-3">${payment.amount}</td>
-                <td className="p-3">{payment.status}</td>
-                <td className="p-3">
-                  {new Date(payment.createdAt).toLocaleDateString()}
-                </td>
-                <td className="p-3">
-                  <button
-                    onClick={() => printReceipt(payment)}
-                    className="rounded bg-green-600 px-3 py-1"
-                  >
-                    Print Receipt
-                  </button>
+            {filteredPayments.length > 0 ? (
+              filteredPayments.map((payment) => (
+                <tr key={payment.id} className="border-t border-slate-700">
+                  <td className="p-3">GYM-{payment.id}</td>
+                  <td className="p-3">{payment.member.user.fullName}</td>
+                  <td className="p-3">${payment.amount}</td>
+                  <td className="p-3">{payment.status}</td>
+                  <td className="p-3">
+                    {new Date(payment.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="flex flex-wrap gap-2 p-3">
+                    <button
+                      onClick={() => printReceipt(payment)}
+                      className="rounded bg-green-600 px-3 py-1"
+                    >
+                      Print
+                    </button>
+
+                    <button
+                      onClick={() => updatePaymentStatus(payment.id, "PAID")}
+                      className="rounded bg-blue-600 px-3 py-1"
+                    >
+                      Paid
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        updatePaymentStatus(payment.id, "PENDING")
+                      }
+                      className="rounded bg-yellow-600 px-3 py-1"
+                    >
+                      Pending
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        updatePaymentStatus(payment.id, "REFUNDED")
+                      }
+                      className="rounded bg-purple-600 px-3 py-1"
+                    >
+                      Refund
+                    </button>
+
+                    <button
+                      onClick={() => deletePayment(payment.id)}
+                      className="rounded bg-red-600 px-3 py-1"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="p-6 text-center text-gray-400">
+                  No payments found.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

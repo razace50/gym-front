@@ -15,6 +15,7 @@ import {
   ClipboardList,
   TrendingUp,
   Wallet,
+  Activity,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -125,6 +126,12 @@ const Sidebar: React.FC<SideBarProps> = ({ open, setOpen }) => {
   name: "Expenses",
   icon: <Wallet size={20} />,
   path: "/expenses",
+  roles: ["SUPER_ADMIN", "ADMIN"],
+},
+{
+  name: "Activity Logs",
+  icon: <Activity size={20} />,
+  path: "/activity-logs",
   roles: ["SUPER_ADMIN", "ADMIN"],
 },
   ];

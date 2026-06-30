@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { AxiosError } from "axios";
 import api from "../../api/api";
 import { Link } from "react-router-dom";
 
@@ -46,6 +47,7 @@ type Member = {
   } | null;
 };
 
+
 const emptyForm = {
   fullName: "",
   email: "",
@@ -73,26 +75,43 @@ export default function Members() {
   const [renewPlanId, setRenewPlanId] = useState("");
   const [renewAmount, setRenewAmount] = useState("");
 
-  const fetchData = async () => {
-    try {
-      const [membersRes, membershipsRes, trainersRes] = await Promise.all([
-        api.get("/members"),
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const role = user?.role;
+
+  const canManageMembers =
+    role === "SUPER_ADMIN" || role === "ADMIN" || role === "RECEPTIONIST";
+
+  const handleAxiosError = (error: unknown, fallbackMessage: string) => {
+    if (error instanceof AxiosError) {
+      alert(error.response?.data?.message ?? error.message);
+    } else {
+      alert(fallbackMessage);
+    }
+  };
+
+  const fetchData = useCallback(async () => {
+  try {
+    const membersRes = await api.get("/members");
+    setMembers(membersRes.data);
+
+    if (canManageMembers) {
+      const [membershipsRes, trainersRes] = await Promise.all([
         api.get("/memberships"),
         api.get("/trainers"),
       ]);
 
-      setMembers(membersRes.data);
       setMemberships(membershipsRes.data);
       setTrainers(trainersRes.data);
-    } catch (error) {
-      console.error(error);
-      alert("Failed to load members data");
     }
-  };
+  } catch (error: unknown) {
+    console.error("Failed to load members", error);
+    handleAxiosError(error, "Failed to load members data");
+  }
+}, [canManageMembers]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const resetForm = () => {
     setForm(emptyForm);
@@ -129,8 +148,8 @@ export default function Members() {
 
       resetForm();
       fetchData();
-    } catch (error: any) {
-      alert(error?.response?.data?.message || "Failed to save member");
+    } catch (error: unknown) {
+      handleAxiosError(error, "Failed to save member");
     } finally {
       setLoading(false);
     }
@@ -157,15 +176,17 @@ export default function Members() {
     try {
       await api.delete(`/members/${id}`);
       fetchData();
-    } catch (error: any) {
-      alert(error?.response?.data?.message || "Failed to delete member");
+    } catch (error: unknown) {
+      handleAxiosError(error, "Failed to delete member");
     }
   };
 
   const openRenewModal = (member: Member) => {
     setRenewMemberId(member.id);
     setRenewPlanId(member.membership?.id ? String(member.membership.id) : "");
-    setRenewAmount(member.membership?.price ? String(member.membership.price) : "");
+    setRenewAmount(
+      member.membership?.price ? String(member.membership.price) : ""
+    );
   };
 
   const submitRenewal = async () => {
@@ -185,8 +206,8 @@ export default function Members() {
       setRenewPlanId("");
       setRenewAmount("");
       fetchData();
-    } catch (error: any) {
-      alert(error?.response?.data?.message || "Failed to renew membership");
+    } catch (error: unknown) {
+      handleAxiosError(error, "Failed to renew membership");
     }
   };
 
@@ -194,8 +215,8 @@ export default function Members() {
     try {
       await api.patch(`/members/${id}/status`, { status });
       fetchData();
-    } catch (error: any) {
-      alert(error?.response?.data?.message || "Failed to update status");
+    } catch (error: unknown) {
+      handleAxiosError(error, "Failed to update status");
     }
   };
 
@@ -221,45 +242,118 @@ export default function Members() {
     <div className="p-6 text-white">
       <h1 className="mb-6 text-2xl font-bold">Members</h1>
 
-      <form
-        onSubmit={submitMember}
-        className="mb-8 grid grid-cols-1 gap-4 rounded-xl bg-slate-800 p-6 md:grid-cols-3"
-      >
-        <input className="rounded bg-slate-900 p-3" placeholder="Full name" value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} required />
-        <input className="rounded bg-slate-900 p-3" type="email" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
-        {!editingId && <input className="rounded bg-slate-900 p-3" type="password" placeholder="Password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />}
-        <input className="rounded bg-slate-900 p-3" placeholder="Phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
-        <input className="rounded bg-slate-900 p-3" type="number" placeholder="Age" value={form.age} onChange={(e) => setForm({ ...form, age: e.target.value })} />
-        <select className="rounded bg-slate-900 p-3" value={form.gender} onChange={(e) => setForm({ ...form, gender: e.target.value })}>
-          <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
-        <input className="rounded bg-slate-900 p-3" placeholder="Address" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
-        <select className="rounded bg-slate-900 p-3" value={form.membershipId} onChange={(e) => setForm({ ...form, membershipId: e.target.value })}>
-          <option value="">No Membership</option>
-          {memberships.map((membership) => (
-            <option key={membership.id} value={membership.id}>{membership.name}</option>
-          ))}
-        </select>
-        <select className="rounded bg-slate-900 p-3" value={form.trainerId} onChange={(e) => setForm({ ...form, trainerId: e.target.value })}>
-          <option value="">No Trainer</option>
-          {trainers.map((trainer) => (
-            <option key={trainer.id} value={trainer.id}>{trainer.user.fullName}</option>
-          ))}
-        </select>
+      {canManageMembers && (
+        <form
+          onSubmit={submitMember}
+          className="mb-8 grid grid-cols-1 gap-4 rounded-xl bg-slate-800 p-6 md:grid-cols-3"
+        >
+          <input
+            className="rounded bg-slate-900 p-3"
+            placeholder="Full name"
+            value={form.fullName}
+            onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+            required
+          />
 
-        <button disabled={loading} className="rounded bg-pink-600 p-3 font-bold hover:bg-pink-700">
-          {editingId ? "Update Member" : "Create Member"}
-        </button>
+          <input
+            className="rounded bg-slate-900 p-3"
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            required
+          />
 
-        {editingId && (
-          <button type="button" onClick={resetForm} className="rounded bg-gray-600 p-3 font-bold hover:bg-gray-700">
-            Cancel Edit
+          {!editingId && (
+            <input
+              className="rounded bg-slate-900 p-3"
+              type="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              required
+            />
+          )}
+
+          <input
+            className="rounded bg-slate-900 p-3"
+            placeholder="Phone"
+            value={form.phone}
+            onChange={(e) => setForm({ ...form, phone: e.target.value })}
+          />
+
+          <input
+            className="rounded bg-slate-900 p-3"
+            type="number"
+            placeholder="Age"
+            value={form.age}
+            onChange={(e) => setForm({ ...form, age: e.target.value })}
+          />
+
+          <select
+            className="rounded bg-slate-900 p-3"
+            value={form.gender}
+            onChange={(e) => setForm({ ...form, gender: e.target.value })}
+          >
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <input
+            className="rounded bg-slate-900 p-3"
+            placeholder="Address"
+            value={form.address}
+            onChange={(e) => setForm({ ...form, address: e.target.value })}
+          />
+
+          <select
+            className="rounded bg-slate-900 p-3"
+            value={form.membershipId}
+            onChange={(e) =>
+              setForm({ ...form, membershipId: e.target.value })
+            }
+          >
+            <option value="">No Membership</option>
+            {memberships.map((membership) => (
+              <option key={membership.id} value={membership.id}>
+                {membership.name}
+              </option>
+            ))}
+          </select>
+
+          <select
+            className="rounded bg-slate-900 p-3"
+            value={form.trainerId}
+            onChange={(e) => setForm({ ...form, trainerId: e.target.value })}
+          >
+            <option value="">No Trainer</option>
+            {trainers.map((trainer) => (
+              <option key={trainer.id} value={trainer.id}>
+                {trainer.user.fullName}
+              </option>
+            ))}
+          </select>
+
+          <button
+            disabled={loading}
+            className="rounded bg-pink-600 p-3 font-bold hover:bg-pink-700"
+          >
+            {editingId ? "Update Member" : "Create Member"}
           </button>
-        )}
-      </form>
+
+          {editingId && (
+            <button
+              type="button"
+              onClick={resetForm}
+              className="rounded bg-gray-600 p-3 font-bold hover:bg-gray-700"
+            >
+              Cancel Edit
+            </button>
+          )}
+        </form>
+      )}
 
       <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
         <input
@@ -305,28 +399,72 @@ export default function Members() {
                 <td className="p-3">{member.user.email}</td>
                 <td className="p-3">{member.user.phone || "N/A"}</td>
                 <td className="p-3">{member.membership?.name || "No Plan"}</td>
-                <td className="p-3">{member.trainer?.user.fullName || "N/A"}</td>
-                <td className="p-3">{member.membershipEnd ? new Date(member.membershipEnd).toLocaleDateString() : "N/A"}</td>
                 <td className="p-3">
-                  <select className="rounded bg-slate-900 p-2" value={member.status} onChange={(e) => updateStatus(member.id, e.target.value)}>
-                    <option value="ACTIVE">ACTIVE</option>
-                    <option value="INACTIVE">INACTIVE</option>
-                    <option value="SUSPENDED">SUSPENDED</option>
-                    <option value="EXPIRED">EXPIRED</option>
-                  </select>
+                  {member.trainer?.user.fullName || "N/A"}
                 </td>
+                <td className="p-3">
+                  {member.membershipEnd
+                    ? new Date(member.membershipEnd).toLocaleDateString()
+                    : "N/A"}
+                </td>
+
+                <td className="p-3">
+                  {canManageMembers ? (
+                    <select
+                      className="rounded bg-slate-900 p-2"
+                      value={member.status}
+                      onChange={(e) =>
+                        updateStatus(member.id, e.target.value)
+                      }
+                    >
+                      <option value="ACTIVE">ACTIVE</option>
+                      <option value="INACTIVE">INACTIVE</option>
+                      <option value="SUSPENDED">SUSPENDED</option>
+                      <option value="EXPIRED">EXPIRED</option>
+                    </select>
+                  ) : (
+                    <span>{member.status}</span>
+                  )}
+                </td>
+
                 <td className="p-3">
                   {member.createdBy
                     ? `${member.createdBy.fullName} (${member.createdBy.role})`
                     : "N/A"}
                 </td>
+
                 <td className="flex flex-wrap gap-2 p-3">
-                  <Link to={`/members/${member.id}`} className="rounded bg-purple-600 px-3 py-1">
+                  <Link
+                    to={`/members/${member.id}`}
+                    className="rounded bg-purple-600 px-3 py-1"
+                  >
                     View
                   </Link>
-                  <button onClick={() => editMember(member)} className="rounded bg-blue-600 px-3 py-1">Edit</button>
-                  <button onClick={() => openRenewModal(member)} className="rounded bg-green-600 px-3 py-1">Renew</button>
-                  <button onClick={() => deleteMember(member.id)} className="rounded bg-red-600 px-3 py-1">Delete</button>
+
+                  {canManageMembers && (
+                    <>
+                      <button
+                        onClick={() => editMember(member)}
+                        className="rounded bg-blue-600 px-3 py-1"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={() => openRenewModal(member)}
+                        className="rounded bg-green-600 px-3 py-1"
+                      >
+                        Renew
+                      </button>
+
+                      <button
+                        onClick={() => deleteMember(member.id)}
+                        className="rounded bg-red-600 px-3 py-1"
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}
@@ -361,7 +499,8 @@ export default function Members() {
               <option value="">Select Plan</option>
               {memberships.map((membership) => (
                 <option key={membership.id} value={membership.id}>
-                  {membership.name} - {membership.duration} month - ${membership.price}
+                  {membership.name} - {membership.duration} month - $
+                  {membership.price}
                 </option>
               ))}
             </select>
