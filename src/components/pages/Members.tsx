@@ -81,13 +81,15 @@ export default function Members() {
   const canManageMembers =
     role === "SUPER_ADMIN" || role === "ADMIN" || role === "RECEPTIONIST";
 
-  const handleAxiosError = (error: unknown, fallbackMessage: string) => {
+  const handleAxiosError = useCallback( (error: unknown, fallbackMessage: string) => {
     if (error instanceof AxiosError) {
       alert(error.response?.data?.message ?? error.message);
     } else {
       alert(fallbackMessage);
     }
-  };
+  },
+  []
+  );
 
   const fetchData = useCallback(async () => {
   try {
@@ -107,7 +109,7 @@ export default function Members() {
     console.error("Failed to load members", error);
     handleAxiosError(error, "Failed to load members data");
   }
-}, [canManageMembers]);
+}, [canManageMembers, handleAxiosError]);
 
   useEffect(() => {
     fetchData();
